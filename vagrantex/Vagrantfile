@@ -1,0 +1,39 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/bookworm64"
+
+  config.vm.define "dhcp" do |dhcp|
+    dhcp.vm.hostname = "dhcp.javi.test"
+    dhcp.vm.network "private_network", 
+      hostname: true, 
+      ip: "192.168.57.10", 
+      virtualbox__intnet: "internal"
+  end # dhcp
+
+  config.vm.define "dns" do |dns|
+    dns.vm.hostname = "dns.javi.test"
+    dns.vm.network "private_network", 
+      hostname: true, 
+      ip: "192.168.57.20", 
+      virtualbox__intnet: "internal"
+  end # dns
+
+  config.vm.define "marketing" do |marketing|
+    marketing.vm.hostname = "marketing1.javi.test"
+    marketing.vm.network "private_network", 
+      type: "dhcp", 
+      auto_config: false, 
+      virtualbox__intnet: "internal"
+  end # marketing1
+  
+  config.vm.define "printer" do |printer|
+    printer.vm.hostname = "printer1.javi.test"
+    printer.vm.network "private_network", 
+      type: "dhcp", 
+      auto_config: false, 
+      virtualbox__intnet: "internal",
+      :mac => "08002767c349"
+  end # printer1
+end
